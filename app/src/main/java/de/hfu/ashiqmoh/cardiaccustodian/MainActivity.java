@@ -1,12 +1,16 @@
 package de.hfu.ashiqmoh.cardiaccustodian;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -51,8 +55,9 @@ public class MainActivity extends AppCompatActivity implements
     protected static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
     protected static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2;
 
-    protected final static String KEY_LOCATION = "location";
-    protected final static String KEY_LAST_UPDATED_TIME_STRING = "last-updated-time-string";
+    protected static final String KEY_LOCATION = "location";
+    protected static final String KEY_LAST_UPDATED_TIME_STRING = "last-updated-time-string";
+    protected static final String ADDRESS_REQUESTED_KEY = "address-requested-pending";
 
     protected GoogleApiClient mGoogleApiClient;
     protected LocationRequest mLocationRequest;
@@ -61,6 +66,10 @@ public class MainActivity extends AppCompatActivity implements
     protected String mLastUpdateTime;
     protected GoogleMap mMap;
     protected SupportMapFragment mMapFragment;
+
+    protected boolean mAddressRequested;
+    protected String mAddressOutput;
+    private AddressResultReceiver mResultReceiver;
 
     protected Boolean mInitialMapLoad;
     private static boolean fab_main_checked = false;
@@ -103,6 +112,8 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
 
+        mResultReceiver = new AddressResultReceiver(new Handler());
+
         updateValuesFromBundle(savedInstanceState);
         buildMapFragment();
         buildGoogleApiClient();
@@ -119,6 +130,9 @@ public class MainActivity extends AppCompatActivity implements
             if (savedInstanceState.keySet().contains(KEY_LAST_UPDATED_TIME_STRING)) {
                 mLastUpdateTime = savedInstanceState.getString(KEY_LAST_UPDATED_TIME_STRING);
             }
+            if (savedInstanceState.keySet().contains(ADDRESS_REQUESTED_KEY)) {
+                mAddressRequested = savedInstanceState.getBoolean(ADDRESS_REQUESTED_KEY);
+            }
         }
     }
 
@@ -132,25 +146,26 @@ public class MainActivity extends AppCompatActivity implements
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         if (mCurrentLocation != null) {
-            updateMap("onMapReady");
+            updateMap();
         }
     }
 
-    private void updateMap(String from) {
-        Log.i(TAG, from);
-        LatLng currentLatLng = null;
+    private void updateMap() {
         if (mCurrentLocation != null) {
-            currentLatLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
-        }
+            double latitude = mCurrentLocation.getLatitude();
+            double longitude = mCurrentLocation.getLongitude();
+            LatLng currentLatLng = new LatLng(latitude, longitude);
 
-        if (mMap != null && currentLatLng != null) {
-            mMap.clear();
-            mMap.addMarker(new MarkerOptions().position(currentLatLng).title("current location"));
-        }
-        if (mInitialMapLoad == true) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng));
-            mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
-            mInitialMapLoad = false;
+            if (mMap != null) {
+                mMap.clear();
+                mMap.addMarker(new MarkerOptions().position(currentLatLng).title("current location"));
+
+                if (mInitialMapLoad == true) {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng));
+                    mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+                    mInitialMapLoad = false;
+                }
+            }
         }
     }
 
@@ -246,6 +261,43 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
+    protected void startIntentService() {
+        Intent intent = new Intent(this, FetchAddressIntentService.class);
+        intent.putExtra(Constants.RECEIVER, mResultReceiver);
+        intent.putExtra(Constants.LOCATION_DATA_EXTRA, mCurrentLocation);
+        startService(intent);
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        if (mCurrentLocation == null) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            }
+            mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+            updateMap();
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        mCurrentLocation = location;
+        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+        updateMap();
+        // Toast.makeText(this, "Location updated", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onConnectionSuspended(int cause) {
+        Log.i(TAG, "Connection suspended");
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult result) {
+        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -277,40 +329,23 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onConnected(Bundle connectionHint) {
-        if (mCurrentLocation == null) {
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            }
-            mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-            updateMap("onConnected");
-        }
-        startLocationUpdates();
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        mCurrentLocation = location;
-        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-        updateMap("onLocationChanged");
-        Toast.makeText(this, "Location updated", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onConnectionSuspended(int cause) {
-        Log.i(TAG, "Connection suspended");
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult result) {
-        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putParcelable(KEY_LOCATION, mCurrentLocation);
         savedInstanceState.putString(KEY_LAST_UPDATED_TIME_STRING, mLastUpdateTime);
+        savedInstanceState.putBoolean(ADDRESS_REQUESTED_KEY, mAddressRequested);
+    }
+
+    @SuppressLint("ParcelCreator")
+    class AddressResultReceiver extends ResultReceiver {
+        public AddressResultReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            mAddressOutput = resultData.getString(Constants.RESULT_DATA_KEY);
+            mAddressRequested = false;
+        }
     }
 }
