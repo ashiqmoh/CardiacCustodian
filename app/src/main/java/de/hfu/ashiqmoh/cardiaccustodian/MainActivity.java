@@ -13,10 +13,15 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -48,7 +53,8 @@ public class MainActivity extends AppCompatActivity implements
         ConnectionCallbacks,
         OnConnectionFailedListener,
         LocationListener,
-        ResultCallback<LocationSettingsResult> {
+        ResultCallback<LocationSettingsResult>,
+        NavigationView.OnNavigationItemSelectedListener {
 
     protected static final String TAG = "MainActivity";
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
@@ -74,36 +80,57 @@ public class MainActivity extends AppCompatActivity implements
     protected Boolean mInitialMapLoad;
     private static boolean fab_main_checked = false;
 
+    // widget
+    protected FloatingActionButton mMainFab;
+    protected FloatingActionButton mCallFab;
+    protected FloatingActionButton mNaviFab;
+    protected Toolbar mToolbar;
+    protected DrawerLayout mDrawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
 
-        final FloatingActionButton fab_main = (FloatingActionButton) findViewById(R.id.fab_main);
-        final FloatingActionButton fab_call = (FloatingActionButton) findViewById(R.id.fab_call);
-        final FloatingActionButton fab_navi = (FloatingActionButton) findViewById(R.id.fab_navi);
+        mResultReceiver = new AddressResultReceiver(new Handler());
 
-        fab_main.setOnClickListener(new View.OnClickListener() {
+        initFloatingActionButtons();
+        initNavigationDrawer();
+        initNavigationView();
+        updateValuesFromBundle(savedInstanceState);
+        buildMapFragment();
+        buildGoogleApiClient();
+        createLocationRequest();
+        buildLocationSettingsRequest();
+        checkLocationSettings();
+    }
+
+    private void initFloatingActionButtons() {
+        mMainFab = (FloatingActionButton) findViewById(R.id.fab_main);
+        mCallFab = (FloatingActionButton) findViewById(R.id.fab_call);
+        mNaviFab = (FloatingActionButton) findViewById(R.id.fab_navi);
+
+        mMainFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (fab_main_checked) {
-                    fab_call.setVisibility(FloatingActionButton.INVISIBLE);
-                    fab_navi.setVisibility(FloatingActionButton.INVISIBLE);
-                    fab_main.setImageResource(R.drawable.ic_add_white_24dp);
+                    mCallFab.setVisibility(FloatingActionButton.INVISIBLE);
+                    mNaviFab.setVisibility(FloatingActionButton.INVISIBLE);
+                    mMainFab.setImageResource(R.drawable.ic_add_white_24dp);
                     fab_main_checked = false;
                 } else {
-                    fab_call.setVisibility(FloatingActionButton.VISIBLE);
-                    fab_navi.setVisibility(FloatingActionButton.VISIBLE);
-                    fab_main.setImageResource(R.drawable.ic_remove_white_24dp);
+                    mCallFab.setVisibility(FloatingActionButton.VISIBLE);
+                    mNaviFab.setVisibility(FloatingActionButton.VISIBLE);
+                    mMainFab.setImageResource(R.drawable.ic_remove_white_24dp);
                     fab_main_checked = true;
                 }
             }
         });
 
-        fab_call.setOnClickListener(new View.OnClickListener() {
+        mCallFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Uri number = Uri.parse("tel:123456");
@@ -111,15 +138,19 @@ public class MainActivity extends AppCompatActivity implements
                 startActivity(callIntent);
             }
         });
+    }
 
-        mResultReceiver = new AddressResultReceiver(new Handler());
+    private void initNavigationDrawer() {
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawer.addDrawerListener(toggle);
+        toggle.syncState();
+    }
 
-        updateValuesFromBundle(savedInstanceState);
-        buildMapFragment();
-        buildGoogleApiClient();
-        createLocationRequest();
-        buildLocationSettingsRequest();
-        checkLocationSettings();
+    private void initNavigationView() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     private void updateValuesFromBundle(Bundle savedInstanceState) {
@@ -299,6 +330,15 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onBackPressed() {
+        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+            mDrawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
@@ -346,6 +386,29 @@ public class MainActivity extends AppCompatActivity implements
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             mAddressOutput = resultData.getString(Constants.RESULT_DATA_KEY);
             mAddressRequested = false;
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        mDrawer.closeDrawer(GravityCompat.START);
+        switch (item.getItemId()) {
+            case R.id.nav_main_map:
+                return true;
+            case R.id.nav_defi_map:
+                return true;
+            case R.id.nav_first_aid_instruction:
+                return true;
+            case R.id.nav_user_profile:
+                return true;
+            case R.id.nav_settings:
+                return true;
+            case R.id.nav_help:
+                return true;
+            case R.id.nav_send_feedback:
+                return true;
+            default:
+                return true;
         }
     }
 }
