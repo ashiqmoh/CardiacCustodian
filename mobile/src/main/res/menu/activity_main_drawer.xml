@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_main_map"
+            android:title="@string/menu_main_map" />
+        <item
+            android:id="@+id/nav_heart_rate_monitor"
+            android:title="@string/menu_heart_rate_monitor" />
+        <item
+            android:id="@+id/nav_defi_map"
+            android:title="@string/menu_map_defi" />
+        <item
+            android:id="@+id/nav_first_aid_instruction"
+            android:title="@string/menu_first_aid_instruction" />
+        <item
+            android:id="@+id/nav_user_profile"
+            android:title="@string/menu_user_profile" />
+    </group>
+
+</menu>

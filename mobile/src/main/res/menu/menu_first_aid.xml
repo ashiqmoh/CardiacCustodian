@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="de.hfu.ashiqmoh.cardiaccustodian.FirstAidActivity">
+
+    <item
+        android:id="@+id/play_reanimation_rhythm"
+        android:icon="@drawable/ic_play_circle_filled_white_24dp"
+        android:title="@string/play_reanimation_rhythm"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/pause_reanimation_rhythm"
+        android:icon="@drawable/ic_pause_circle_filled_white_24dp"
+        android:title="@string/pause_reanimation_rhythm"
+        app:showAsAction="ifRoom" />
+
+</menu>

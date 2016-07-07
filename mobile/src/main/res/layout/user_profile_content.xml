@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/activity_horizontal_margin"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="de.hfu.ashiqmoh.cardiaccustodian.UserProfileActivity"
+    tools:showIn="@layout/user_profile_app_bar">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/image_button_profile_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:maxHeight="250dp"
+            android:cropToPadding="true"
+            android:contentDescription="@string/profile_image_description" />
+
+        <!-- user email -->
+        <TextView
+            android:id="@+id/label_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/label_email" />
+
+        <EditText
+            android:id="@+id/edit_text_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress" />
+
+
+        <!-- first name -->
+        <TextView
+            android:id="@+id/label_first_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/label_first_name" />
+
+        <EditText
+            android:id="@+id/edit_text_first_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName" />
+
+
+        <!-- last name -->
+        <TextView
+            android:id="@+id/label_last_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/label_last_name" />
+
+        <EditText
+            android:id="@+id/edit_text_last_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName" />
+
+
+        <!-- gender -->
+        <TextView
+            android:id="@+id/label_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/label_gender" />
+
+        <RadioGroup
+            android:id="@+id/radio_group_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/radio_option_gender_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gender_option_male"
+                android:checked="false" />
+
+            <RadioButton
+                android:id="@+id/radio_option_gender_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gender_option_female"
+                android:checked="false" />
+
+        </RadioGroup>
+
+
+        <!-- date of birth -->
+        <TextView
+            android:id="@+id/label_date_of_birth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/label_date_of_birth" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/edit_text_date_of_birth"
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:hint="@string/hint_date_of_birth"
+                android:maxLength="2"
+                android:digits="0123456789"
+                android:inputType="date" />
+
+            <EditText
+                android:id="@+id/edit_text_month_of_birth"
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:hint="@string/hint_month_of_birth"
+                android:maxLength="2"
+                android:digits="0123456789"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/edit_text_year_of_birth"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:hint="@string/hint_year_of_birth"
+                android:maxLength="4"
+                android:digits="0123456789"
+                android:inputType="number" />
+
+        </LinearLayout>
+
+
+        <!-- emergency contact -->
+        <TextView
+            android:id="@+id/label_emergency_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/label_emergency_contact" />
+
+        <EditText
+            android:id="@+id/edit_text_emergency_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="+0123456789"
+            android:inputType="phone" />
+
+    </LinearLayout>
+
+</ScrollView>

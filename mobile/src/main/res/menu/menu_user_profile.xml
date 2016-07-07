@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="de.hfu.ashiqmoh.cardiaccustodian.UserProfileActivity">
+
+    <item
+        android:id="@+id/save_user_profile"
+        android:icon="@drawable/ic_done_white_48dp"
+        android:title="@string/menu_user_profile_save"
+        app:showAsAction="ifRoom|withText" />
+
+</menu>

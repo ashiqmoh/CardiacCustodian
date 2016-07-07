@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="de.hfu.ashiqmoh.cardiaccustodian.MainActivity"
+    tools:deviceIds="wear_round"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/heartRateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="@string/measurement_initial"
+        android:textColor="@color/red"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/bpmText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bpm_label"
+        android:textColor="@color/black"
+        android:layout_below="@id/heartRateText"
+        android:layout_marginStart="3dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="15sp"/>
+
+    <ImageButton
+        android:id="@+id/btnStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_media_play"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/bpmText"
+        android:layout_marginTop="5dp"
+        android:contentDescription="@string/play_button" />
+
+    <ImageButton
+        android:id="@+id/btnPause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_media_pause"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/bpmText"
+        android:layout_marginTop="5dp"
+        android:visibility="gone"
+        android:contentDescription="@string/pause_button" />
+
+</RelativeLayout>

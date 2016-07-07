@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">Cardiac Custodian</string>
+    <string name="title_activity_main">Cardiac Custodian</string>
+
+    <string name="nav_drawer_username">Username</string>
+    <string name="nav_drawer_user_password">user.password@example.com</string>
+
+    <string name="no_geocoder_available">No geocoder available</string>
+    <string name="fetch_address">Fetch address</string>
+    <string name="address_found">Address found</string>
+    <string name="no_address_found">Sorry, no address found</string>
+    <string name="no_location_data_provided">No location data provided</string>
+    <string name="service_not_available">Sorry, the service is not available</string>
+    <string name="invalid_lat_long_used">Invalid latitude or longitude used</string>
+
+    <!-- Navigation drawer open/close -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Navigation Drawer item list -->
+    <string name="menu_main_map">Main Map</string>
+    <string name="menu_heart_rate_monitor">Heart Rate Monitor</string>
+    <string name="menu_map_defi">Show defibrillator</string>
+    <string name="menu_first_aid_instruction">First Aid Instruction</string>
+    <string name="menu_user_profile">User Profile</string>
+
+    <!-- Heart Rate Activity -->
+    <string name="heart_rate_activity_label">Heart Rate Monitor</string>
+    <string name="measurement_initial">00</string>
+    <string name="bpm_label">bpm</string>
+    <string name="please_wait_msg">Please wait&#8230;</string>
+    <string name="heart_rate_measurement">%1$d</string>
+
+    <!-- First Aid -->
+    <string name="first_aid_activity_label">First Aid Instructions</string>
+    <string name="first_aid_desc">First Aid For Heart Attack</string>
+    <string name="play_reanimation_rhythm">Play Reanimation Rhythm</string>
+    <string name="pause_reanimation_rhythm">Pause Reanimation Rhythm</string>
+
+    <!-- user profile -->
+    <string name="user_profile_activity_label">User Profile</string>
+    <string name="menu_user_profile_save">Save</string>
+    <string name="user_info_saved">User info saved</string>
+    <string name="profile_image_description">Choose your profile picture</string>
+    <string name="label_email">Email</string>
+    <string name="label_first_name">First Name</string>
+    <string name="label_last_name">Last Name</string>
+    <string name="label_age">Age</string>
+    <string name="label_gender">Gender</string>
+    <string name="label_date_of_birth">Date of Birth</string>
+    <string name="label_emergency_contact">Emergency Contact</string>
+    <string name="gender_option_male">Male</string>
+    <string name="gender_option_female">Female</string>
+    <string name="hint_date_of_birth">dd</string>
+    <string name="hint_month_of_birth">MM</string>
+    <string name="hint_year_of_birth">YYYY</string>
+
+</resources>

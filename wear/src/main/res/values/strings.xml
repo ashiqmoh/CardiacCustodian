@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">HeartRateTest</string>
+    <string name="measurement_initial">--</string>
+    <string name="bpm_label">bpm</string>
+    <string name="play_button">Play</string>
+    <string name="pause_button">Pause</string>
+    <string name="please_wait_msg">Please wait&#8230;</string>
+    <string name="heart_rate_measurement">%1$d</string>
+</resources>
