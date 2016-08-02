@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HeartRateTest</string>
+    <string name="app_name">Cardiac Custodian</string>
     <string name="measurement_initial">--</string>
     <string name="bpm_label">bpm</string>
     <string name="play_button">Play</string>

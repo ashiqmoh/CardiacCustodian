@@ -33,6 +33,7 @@
             android:contentDescription="@string/profile_image_description" />
 
         <!-- user email -->
+        <!--
         <TextView
             android:id="@+id/label_email"
             android:layout_width="match_parent"
@@ -45,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress" />
-
+        -->
 
         <!-- first name -->
         <TextView
@@ -165,8 +166,7 @@
             android:id="@+id/edit_text_emergency_contact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:digits="+0123456789"
-            android:inputType="phone" />
+            android:inputType="textEmailAddress" />
 
     </LinearLayout>
 

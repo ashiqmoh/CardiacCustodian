@@ -14,9 +14,9 @@ public class SendToDataLayerThread extends Thread {
 
     private GoogleApiClient googleApiClient;
     private String path;
-    private int heartRate;
+    private String heartRate;
 
-    public SendToDataLayerThread(GoogleApiClient googleApiClient, String path, int heartRate) {
+    public SendToDataLayerThread(GoogleApiClient googleApiClient, String path, String heartRate) {
         this.googleApiClient = googleApiClient;
         this.path = path;
         this.heartRate = heartRate;
@@ -26,11 +26,11 @@ public class SendToDataLayerThread extends Thread {
     public void run() {
         NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(googleApiClient).await();
         for (Node node : nodes.getNodes()) {
-            MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(googleApiClient, node.getId(), path, Integer.toString(heartRate).getBytes()).await();
+            MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(googleApiClient, node.getId(), path, heartRate.getBytes()).await();
             if (result.getStatus().isSuccess()) {
-                Log.v(TAG, "Message: {" + heartRate + "} send to: " + node.getDisplayName());
+                // Log.v(TAG, "Message: {" + heartRate + "} send to: " + node.getDisplayName());
             } else {
-                Log.v(TAG, "ERROR: failed to send message");
+                // Log.v(TAG, "ERROR: failed to send message");
             }
         }
     }

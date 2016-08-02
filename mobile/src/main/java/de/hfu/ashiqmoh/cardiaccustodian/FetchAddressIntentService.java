@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import de.hfu.ashiqmoh.cardiaccustodian.constants.Constants;
+
 public class FetchAddressIntentService extends IntentService {
     private static final String TAG = "FetchAddressIntentService";
     protected ResultReceiver mReceiver;

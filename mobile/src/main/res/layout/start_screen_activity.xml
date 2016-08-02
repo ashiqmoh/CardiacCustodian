@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#65ab9f"
+    tools:context="de.hfu.ashiqmoh.cardiaccustodian.StartScreenActivity">
+
+    <ImageView
+        android:id="@+id/start_screen_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:keepScreenOn="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/start_screen_transparent"
+        android:contentDescription="@string/start_screen_image_desc"
+        android:cropToPadding="false"
+        android:adjustViewBounds="true" />
+
+</FrameLayout>

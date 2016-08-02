@@ -110,6 +110,7 @@ public class MainActivity extends WearableActivity implements
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) { }
 
     private void stopMeasurement() {
+        new SendToDataLayerThread(mGoogleApiClient, "/heart_rate", "--").start();
         if (mSensorManager != null) {
             mSensorManager.unregisterListener(this);
         }
@@ -120,9 +121,9 @@ public class MainActivity extends WearableActivity implements
         if (event.sensor.getType() == Sensor.TYPE_HEART_RATE) {
             float mHeartRateFloat = event.values[0];
             int mHeartRate = Math.round(mHeartRateFloat);
-            Log.i(TAG, "mHeartRate=" + mHeartRate);
+            // Log.v(TAG, "mHeartRate=" + mHeartRate);
             mTextView.setText(getString(R.string.heart_rate_measurement, mHeartRate));
-            new SendToDataLayerThread(mGoogleApiClient, "/heart_rate", mHeartRate).start();
+            new SendToDataLayerThread(mGoogleApiClient, "/heart_rate", Integer.toString(mHeartRate)).start();
         }
     }
 
@@ -138,7 +139,7 @@ public class MainActivity extends WearableActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-
+        /*
         List<Sensor> sensors = mSensorManager.getSensorList(Sensor.TYPE_ALL);
         for (Sensor sensor : sensors) {
             Log.i("Sensor list", sensor.getName() + ": " + sensor.getType());
@@ -150,6 +151,7 @@ public class MainActivity extends WearableActivity implements
         Log.i(TAG, "SENSOR_STATUS_ACCURACY_LOW=" + SensorManager.SENSOR_STATUS_ACCURACY_LOW);
         Log.i(TAG, "SENSOR_STATUS_ACCURACY_MEDIUM=" + SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM);
         Log.i(TAG, "SENSOR_STATUS_ACCURACY_HIGH=" + SensorManager.SENSOR_STATUS_ACCURACY_HIGH);
+        */
     }
 
     @Override

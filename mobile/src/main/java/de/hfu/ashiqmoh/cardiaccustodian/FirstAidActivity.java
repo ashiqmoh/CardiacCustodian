@@ -1,6 +1,8 @@
 package de.hfu.ashiqmoh.cardiaccustodian;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -13,13 +15,18 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import java.io.IOException;
+
+import de.hfu.ashiqmoh.cardiaccustodian.constants.Constants;
 
 public class FirstAidActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "FirstAidActivity";
+
+    private SharedPreferences mUserData;
 
     private Toolbar mToolbar;
     private DrawerLayout mDrawer;
@@ -40,6 +47,8 @@ public class FirstAidActivity extends AppCompatActivity implements
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+
+        mUserData = getSharedPreferences(Constants.KEY_USER_DATA, Context.MODE_PRIVATE);
 
         updateValuesFromBundle(savedInstanceState);
         initMediaPlayer();
@@ -86,6 +95,13 @@ public class FirstAidActivity extends AppCompatActivity implements
     private void initNavigationView() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        String firstName = mUserData.getString(Constants.KEY_USER_FIRST_NAME, "");
+        String lastName = mUserData.getString(Constants.KEY_USER_LAST_NAME, "");
+        String name = firstName + " " + lastName;
+
+        TextView textView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.nav_drawer_username);
+        textView.setText(name);
     }
 
     @Override
